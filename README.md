@@ -48,15 +48,15 @@ npm install
 ```
 
 ### Setup mongoDB.
-Our REST API uses mongoDB as its data storage. We need to set up a database that will be used by our app. Download mongoDB from their [website](https://www.mongodb.com/download-center#community).
+Our REST API uses mongoDB as its data storage. We need to set up a database that will be used by our app. Download mongoDB from their [website](https://www.mongodb.com/download-center#community). There are instructions located [here](https://docs.mongodb.com/manual/tutorial/)
 
 Once installed, start a mongod process.
 ```
-mkdir /data
+mkdir -p /data/db
 
-mongod --dbpath=/data
+mongod
 ```
-This will start storing database data in the /data directory.
+This will start storing database data in the /data/db directory.
 
 ### Run the application.
 ```
