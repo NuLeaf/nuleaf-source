@@ -12,5 +12,5 @@ var teamSchema = new mongoose.Schema({
   name : { type: String, maxlength: 128, required: true, unique: true }
 });
 
-// Exports the Event model.
+// Exports the Team model.
 module.exports = mongoose.model('Team', teamSchema);
