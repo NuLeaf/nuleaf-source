@@ -7,17 +7,17 @@
 
 var mongoose = require('mongoose');
 
-// Schema definition for teams.
+// Schema definition for users.
 var userSchema = new mongoose.Schema({
   username   : { type: String, maxlength: 128, required: true, unique: true },
   email      : { type: String, maxlength: 128, required: true, unique: true },
   password   : { type: String, maxlength: 128, required: true },
   firstname  : { type: String, maxlength: 64 },
   lastname   : { type: String, maxlength: 64 },
-  image1     : { type: String, maxlength: 256, default: '' },
-  image2     : { type: String, maxlength: 256, default: '' },
+  image1     : { type: String, maxlength: 256 },
+  image2     : { type: String, maxlength: 256 },
   is_active  : { type: Boolean, default: true },
-  team_name  : { type: String, maxlength: 128, required: true },
+  team       : { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
   description: { type: String, maxlength: 1000, default: '' }
 });
 
