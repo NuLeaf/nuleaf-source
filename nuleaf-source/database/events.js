@@ -19,7 +19,9 @@ var Event = require('../models/event');
  *                    start_date: Filter for events after this date.
  *                    end_date  : Filter for events before this date.
  *                    location  : Filter for events with this location.
- *                    
+ *                    skip      : The amount of events skipped search on a certain page.
+ *                    limit     : The cutoff number of events displayed on each page.
+ *
  * @return {Error}, {Array} Array of events, or empty if none found matching conditions.
  */
 exports.find = function(conditions, callback) {
@@ -28,8 +30,14 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
+  var skip = conditions.skip;
+  var limit = conditions.limit;
+
+  delete conditions.skip;
+  delete conditions.limit;
+
   var _conditions = buildConditions(conditions);
-  Event.find(_conditions, callback);
+  Event.find(_conditions, callback).skip(skip).limit(limit);
 };
 
 /**
