@@ -20,8 +20,8 @@ var Steminar = require('../models/steminar');
  *                    end_date  : Filter for steminars before this date.
  *                    location  : Filter for steminars with this location.
  *                    host      : Filter for steminars with this host.
- *                    skip      : The amount of events skipped search on a certain page.
- *                    limit     : The cutoff number of events displayed on each page.
+ *                    skip      : Return a certain number of results after a certain number of documents.
+ *                    limit     : Used to specify the maximum number of results to be returned.
  *                    
  * @return {Error}, {Array} Array of steminars, or empty if none found matching conditions.
  */
@@ -38,7 +38,7 @@ exports.find = function(conditions, callback) {
   delete conditions.limit;
 
   var _conditions = buildConditions(conditions);
-  Steminar.find(_conditions, callback).skip(skip).limit(limit);
+  Steminar.find(_conditions).skip(skip).limit(limit).exec(callback);
 };
 
 /**
