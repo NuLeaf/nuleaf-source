@@ -20,13 +20,17 @@ var EventsDAO = require('../database/events');
  *   start_date: Filter for events after this date.
  *   end_date  : Filter for events before this date.
  *   location  : Filter for events with this location.
+ *   skip      : Return a certain number of results after a certain number of documents.
+ *   limit     : Used to specify the maximum number of results to be returned.
  */
 exports.search = function(req, res) {
   EventsDAO.find({
     title     : req.query.title,
     start_date: req.query.start_date,
     end_date  : req.query.end_date,
-    location  : req.query.location
+    location  : req.query.location,
+    skip      : req.query.skip,
+    limit     : req.query.limit
   }, function(err, events) {
     if (err) { return res.status(500).json(err); }
     return res.status(200).json(events);
