@@ -21,6 +21,8 @@ var SteminarsDAO = require('../database/steminars');
  *   end_date  : Filter for steminars before this date.
  *   location  : Filter for steminars with this location.
  *   host      : Filter for steminars with this host.
+ *   skip      : Return a certain number of results after a certain number of documents.
+ *   limit     : Used to specify the maximum number of results to be returned.
  */
 exports.search = function(req, res) {
   SteminarsDAO.find({
@@ -28,7 +30,9 @@ exports.search = function(req, res) {
     start_date: req.query.start_date,
     end_date  : req.query.end_date,
     location  : req.query.location,
-    host      : req.query.host
+    host      : req.query.host,
+    skip      : req.query.skip,
+    limit     : req.query.limit
   }, function(err, steminars) {
     if (err) { return res.status(500).json(err); }
     return res.status(200).json(steminars);
