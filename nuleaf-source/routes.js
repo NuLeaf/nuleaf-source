@@ -12,7 +12,7 @@ var router = express.Router();
 var EventsController    = require('./controllers/events');
 var SteminarsController = require('./controllers/steminars');
 // var UsersController     = require('./controllers/users');
-// var TeamsController     = require('./controllers/teams');
+var TeamsController     = require('./controllers/teams');
 
 /**
  * Routes
@@ -39,11 +39,11 @@ router.delete('/steminars/:id', SteminarsController.destroy);
 // router.patch ('/users/:id', UsersController.update);
 // router.delete('/users/:id', UsersController.destroy);
 
-// // Teams
-// router.get   ('/teams',     TeamsController.search);
-// router.post  ('/teams',     TeamsController.store);
-// router.get   ('/teams/:id', TeamsController.get);
-// router.patch ('/teams/:id', TeamsController.update);
-// router.delete('/teams/:id', TeamsController.destroy);
+// Teams
+router.get   ('/teams',     TeamsController.search);
+router.post  ('/teams',     TeamsController.store);
+router.get   ('/teams/:id', TeamsController.get);
+router.patch ('/teams/:id', TeamsController.update);
+router.delete('/teams/:id', TeamsController.destroy);
 
 module.exports = router;

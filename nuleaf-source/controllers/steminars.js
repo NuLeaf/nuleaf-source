@@ -36,7 +36,7 @@ exports.search = function(req, res) {
 };
 
 /**
- * Stores a steminar in the database. The response will contain a object with the
+ * Stores a steminar in the database. The response will contain an object with the
  * key 'success' mapped to a boolean representing the result of the insert.
  *
  * POST data:
@@ -70,12 +70,10 @@ exports.get = function(req, res) {
   SteminarsDAO.get(req.params.id, function(err, steminar) {
     if (err) {
       switch(err.name) {
-        case 'CastError':
-          res.status(400).json({ error: 'Not a valid steminar id.' });
-          return;
-        default:
-          res.status(500).json(err);
-          return;
+      case 'CastError':
+        return res.status(400).json({ error: 'Not a valid steminar id.' });
+      default:
+        return res.status(500).json(err);
       }
     }
     if (!steminar) { return res.status(404).json({ error: 'Steminar does not exists.' }); }
@@ -107,12 +105,10 @@ exports.update = function(req, res) {
   }, function(err, steminar) {
     if (err) {
       switch(err.name) {
-        case 'CastError':
-          res.status(400).json({ error: 'Not a valid steminar id.' });
-          return;
-        default:
-          res.status(500).json(err);
-          return;
+      case 'CastError':
+        return res.status(400).json({ error: 'Not a valid steminar id.' });
+      default:
+        return res.status(500).json(err);
       }
     }
     if (!steminar) { return res.json({ success: false }); } // TODO: HTTP status code?
@@ -121,7 +117,7 @@ exports.update = function(req, res) {
 };
 
 /**
- * Deletes an steminar with the specified id from the database. This will return a HTTP
+ * Deletes a steminar with the specified id from the database. This will return a HTTP
  * status code 404 if the steminar is not found.
  */
 exports.destroy = function(req, res) {

@@ -32,3 +32,5 @@ var SERVER_PORT = 3000;
 restAPI.listen(SERVER_PORT, function() {
   console.log('Nuleaf Source REST API listening on port ' + SERVER_PORT);
 });
+
+module.exports = restAPI;

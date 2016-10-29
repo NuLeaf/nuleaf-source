@@ -57,7 +57,7 @@ exports.get = function(id, callback) {
  * Find a steminar with unique id and updates it.
  * @param {Object} Steminar id along with updates.
  *
- * @return {Error}, {Stemianr} The updated steminar.
+ * @return {Error}, {Steminar} The updated steminar.
  */
 exports.update = function(update, callback) {
   update = Helper.filterOutEmpty(update);

@@ -34,7 +34,7 @@ exports.search = function(req, res) {
 };
 
 /**
- * Stores an event in the database. The response will contain a object with the
+ * Stores an event in the database. The response will contain an object with the
  * key 'success' mapped to a boolean representing the result of the insert.
  *
  * POST data:
@@ -62,12 +62,10 @@ exports.get = function(req, res) {
   EventsDAO.get(req.params.id, function(err, event) {
     if (err) {
       switch(err.name) {
-        case 'CastError':
-          res.status(400).json({ error: 'Not a valid event id.' });
-          return;
-        default:
-          res.status(500).json(err);
-          return;
+      case 'CastError':
+        return res.status(400).json({ error: 'Not a valid event id.' });
+      default:
+        return res.status(500).json(err);
       }
     }
     if (!event) { return res.status(404).json({ error: 'Event does not exists.' }); }
@@ -94,11 +92,9 @@ exports.update = function(req, res) {
     if (err) {
       switch(err.name) {
         case 'CastError':
-          res.status(400).json({ error: 'Not a valid event id.' });
-          return;
+          return res.status(400).json({ error: 'Not a valid event id.' });
         default:
-          res.status(500).json(err);
-          return;
+          return res.status(500).json(err);
       }
     }
     if (!event) { return res.json({ success: false }); } // TODO: HTTP status code?
