@@ -21,7 +21,7 @@ docker run -dit
            --name nuleaf-source
            -p 3000:3000
            --link mongo:mongo
-           -e NULEAF_SOURCE_DB_URL=mongodb://mongo/nuleaf-source
+           -e NULEAF_SOURCE_DB_URL=mongodb://mongo/nuleaf_source
            nuleaf-source
 ```
 
@@ -56,7 +56,9 @@ mkdir -p /data/db
 
 mongod
 ```
-This will start storing database data in the /data/db directory.
+This will start storing database data in the /data/db directory. You will also need to set the environment variable so that the application knows where your database is:
+
+Set the variable `NULEAF_SOURCE_DB_URL` to `mongodb://localhost/nuleaf_source`
 
 ### Run the application.
 ```
