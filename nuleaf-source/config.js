@@ -6,5 +6,5 @@
 'use strict';
 
 module.exports = {
-  dbURL: process.env.NULEAF_SOURCE_DB_URL || 'mongodb://localhost/nuleaf-source'
+  dbURL: process.env.NULEAF_SOURCE_DB_URL || 'mongodb://localhost/nuleaf_source'
 };
