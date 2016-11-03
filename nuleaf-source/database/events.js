@@ -30,8 +30,8 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
-  var skip = conditions.skip;
-  var limit = conditions.limit;
+  var skip = parseInt(conditions.skip);
+  var limit = parseInt(conditions.limit);
 
   delete conditions.skip;
   delete conditions.limit;
