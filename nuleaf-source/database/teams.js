@@ -15,7 +15,9 @@ var Team = require('../models/team');
 /**
  * Finds teams matching conditions and returns a collection of steminars.
  * @param  {Object} Conditions:
- *                    name: Filter for team with this name.
+ *                    name : Filter for team with this name.
+ *                    skip : Return a certain number of results after a certain number of documents.
+ *                    limit: Used to specify the maximum number of results to be returned.
  *                    
  * @return {Error}, {Array} Array of teams, or empty if none found matching conditions.
  */
@@ -25,8 +27,14 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
+  var skip = +conditions.skip;
+  var limit = +conditions.limit;
+
+  delete conditions.skip;
+  delete conditions.limit;
+
   var _conditions = buildConditions(conditions);
-  Team.find(_conditions, callback);
+  Team.find(_conditions).skip(skip).limit(limit).exec(callback);
 };
 
 /**
