@@ -16,11 +16,15 @@ var TeamsDAO = require('../database/teams');
  * be an array even if no teams were found matching the filters.
  *
  * Parameters list:
- *   name: Filter for teams with this name.
+ *   name : Filter for teams with this name.
+ *   skip : Return a certain number of results after a certain number of documents.
+ *   limit: Used to specify the maximum number of results to be returned.
  */
 exports.search = function(req, res) {
   TeamsDAO.find({
-    name: req.query.name
+    name : req.query.name,
+    skip : req.query.skip,
+    limit: req.query.limit
   }, function(err, teams) {
     if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(teams);
