@@ -17,8 +17,9 @@ var userSchema = new mongoose.Schema({
   image1     : { type: String, maxlength: 256 },
   image2     : { type: String, maxlength: 256 },
   is_active  : { type: Boolean, default: true },
-  team       : { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
-  description: { type: String, maxlength: 1000, default: '' }
+  team_id    : { type: mongoose.Schema.Types.ObjectId, ref: 'Team' },
+  team_name  : { type: String, maxlength: 128 },
+  description: { type: String, maxlength: 1000 }
 });
 
 // Exports the User model.

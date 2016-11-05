@@ -32,14 +32,13 @@ exports.search = function(req, res) {
     skip      : req.query.skip,
     limit     : req.query.limit
   }, function(err, events) {
-    if (err) { return res.status(500).json(err); }
+    if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(events);
   });
 };
 
 /**
- * Stores an event in the database. The response will contain an object with the
- * key 'success' mapped to a boolean representing the result of the insert.
+ * Stores an event in the database. The response will contain the new event.
  *
  * POST data:
  *   title   : The title of the event.
@@ -52,9 +51,10 @@ exports.store = function(req, res) {
     date    : req.body.date,
     location: req.body.location
   }, function(err, event) {
-    if (err) { return res.status(500).json(err); }
-    if (!event) { return res.json({ success: false }); } // TODO: HTTP status code?
-    return res.status(201).json({ success: true });
+    if (err || !event) {
+      return res.status(500).json({ error: err || 'Failed to create event.' });
+    }
+    return res.status(201).json(event);
   });
 };
 
@@ -69,7 +69,7 @@ exports.get = function(req, res) {
       case 'CastError':
         return res.status(400).json({ error: 'Not a valid event id.' });
       default:
-        return res.status(500).json(err);
+        return res.status(500).json({ error: err });
       }
     }
     if (!event) { return res.status(404).json({ error: 'Event does not exists.' }); }
@@ -82,6 +82,7 @@ exports.get = function(req, res) {
  * event is not found.
  *
  * POST data:
+ *   id      : The id of the event (query string).
  *   title   : The title of the event.
  *   date    : Datetime of the event.
  *   location: The location of the event.
@@ -93,16 +94,13 @@ exports.update = function(req, res) {
     data    : req.body.date,
     location: req.body.location
   }, function(err, event) {
-    if (err) {
-      switch(err.name) {
-        case 'CastError':
-          return res.status(400).json({ error: 'Not a valid event id.' });
-        default:
-          return res.status(500).json(err);
+    if (err || !event) {
+      if (err && err.name === 'CastError') {
+        return res.status(400).json({ error: 'Not a valid event id.' });
       }
+      return res.status(500).json({ error: err || 'Failed to update event.'});
     }
-    if (!event) { return res.json({ success: false }); } // TODO: HTTP status code?
-    return res.status(201).json({ success: true });
+    return res.status(201).json(event);
   });
 };
 
@@ -112,7 +110,7 @@ exports.update = function(req, res) {
  */
 exports.destroy = function(req, res) {
   EventsDAO.delete(req.params.id, function(err) {
-    if (err) { return res.status(500).json(err); }
+    if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json({ success: true });
   });
 };

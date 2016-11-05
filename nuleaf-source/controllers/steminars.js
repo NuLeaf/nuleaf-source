@@ -34,14 +34,13 @@ exports.search = function(req, res) {
     skip      : req.query.skip,
     limit     : req.query.limit
   }, function(err, steminars) {
-    if (err) { return res.status(500).json(err); }
+    if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(steminars);
   });
 };
 
 /**
- * Stores a steminar in the database. The response will contain an object with the
- * key 'success' mapped to a boolean representing the result of the insert.
+ * Stores a steminar in the database. The response will contain the new steminar.
  *
  * POST data:
  *   title      : The title of the steminar.
@@ -60,9 +59,10 @@ exports.store = function(req, res) {
     imageFile  : req.body.image_file,
     description: req.body.description
   }, function(err, steminar) {
-    if (err) { return res.status(500).json(err); }
-    if (!steminar) { return res.json({ success: false }); } // TODO: HTTP status code?
-    return res.status(201).json({ success: true });
+    if (err || !steminar) {
+      return res.status(500).json({ error: err || 'Failed to create steminar.' });
+    }
+    return res.status(201).json(steminar);
   });
 };
 
@@ -77,7 +77,7 @@ exports.get = function(req, res) {
       case 'CastError':
         return res.status(400).json({ error: 'Not a valid steminar id.' });
       default:
-        return res.status(500).json(err);
+        return res.status(500).json({ error: err });
       }
     }
     if (!steminar) { return res.status(404).json({ error: 'Steminar does not exists.' }); }
@@ -90,6 +90,7 @@ exports.get = function(req, res) {
  * steminar is not found.
  *
  * POST data:
+ *   id         : The id of the steminar (query string).
  *   title      : The title of the steminar.
  *   date       : Datetime of the steminar.
  *   location   : The location of the steminar.
@@ -107,16 +108,13 @@ exports.update = function(req, res) {
     imageFile  : req.body.image_file,
     description: req.body.description
   }, function(err, steminar) {
-    if (err) {
-      switch(err.name) {
-      case 'CastError':
+    if (err || !steminar) {
+      if (err && err.name === 'CastError') {
         return res.status(400).json({ error: 'Not a valid steminar id.' });
-      default:
-        return res.status(500).json(err);
       }
+      return res.status(500).json({ error: err || 'Failed to update steminar.' });
     }
-    if (!steminar) { return res.json({ success: false }); } // TODO: HTTP status code?
-    return res.status(201).json({ success: true });
+    return res.status(201).json(steminar);
   });
 };
 
@@ -126,7 +124,7 @@ exports.update = function(req, res) {
  */
 exports.destroy = function(req, res) {
   SteminarsDAO.delete(req.params.id, function(err) {
-    if (err) { return res.status(500).json(err); }
+    if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json({ success: true });
   });
 };

@@ -11,7 +11,7 @@ var router = express.Router();
 // Controllers
 var EventsController    = require('./controllers/events');
 var SteminarsController = require('./controllers/steminars');
-// var UsersController     = require('./controllers/users');
+var UsersController     = require('./controllers/users');
 var TeamsController     = require('./controllers/teams');
 
 /**
@@ -32,12 +32,12 @@ router.get   ('/steminars/:id', SteminarsController.get);
 router.patch ('/steminars/:id', SteminarsController.update);
 router.delete('/steminars/:id', SteminarsController.destroy);
 
-// // Users
-// router.get   ('/users',     UsersController.search);
-// router.post  ('/users',     UsersController.store);
-// router.get   ('/users/:id', UsersController.get);
-// router.patch ('/users/:id', UsersController.update);
-// router.delete('/users/:id', UsersController.destroy);
+// Users
+router.get   ('/users',     UsersController.search);
+router.post  ('/users',     UsersController.store);
+router.get   ('/users/:id', UsersController.get);
+router.patch ('/users/:id', UsersController.update);
+router.delete('/users/:id', UsersController.destroy);
 
 // Teams
 router.get   ('/teams',     TeamsController.search);

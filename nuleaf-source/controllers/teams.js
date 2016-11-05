@@ -22,14 +22,13 @@ exports.search = function(req, res) {
   TeamsDAO.find({
     name: req.query.name
   }, function(err, teams) {
-    if (err) { return res.status(500).json(err); }
+    if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(teams);
   });
 };
 
 /**
- * Stores a team in the database. The response will contain an object with the
- * key 'success' mapped to a boolean representing the result of the insert.
+ * Stores a team in the database. The response will contain the new team.
  *
  * POST data:
  *   name: The name of the team.
@@ -38,9 +37,10 @@ exports.store = function(req, res) {
   TeamsDAO.create({
     name: req.body.name
   }, function(err, team) {
-    if (err) { return res.status(500).json(err); }
-    if (!team) { return res.json({ success: false }); } // TODO: HTTP status code?
-    return res.status(201).json({ success: true });
+    if (err || !team) {
+      return res.status(500).json({ error: err || 'Failed to create team.' });
+    }
+    return res.status(201).json(team);
   });
 };
 
@@ -55,7 +55,7 @@ exports.get = function(req, res) {
       case 'CastError':
         return res.status(400).json({ error: 'Not a valid team id.' });
       default:
-        return res.status(500).json(err);
+        return res.status(500).json({ error: err });
       }
     }
     if (!team) { return res.status(404).json({ error: 'Team does not exists.'}); }
@@ -68,23 +68,21 @@ exports.get = function(req, res) {
  * team is not found.
  *
  * POST data:
+ *   id  : The id of the team (query string).
  *   name: The name of the team.
  */
 exports.update = function(req, res) {
   TeamsDAO.update({
-    id:   req.params.id,
+    id  : req.params.id,
     name: req.body.name
   }, function(err, team) {
-    if (err) {
-      switch(err.name) {
-      case 'CastError':
+    if (err || !team) {
+      if (err && err.name === 'CastError') {
         return res.status(400).json({ error: 'Not a valid team id.' });
-      default:
-        return res.status(500).json(err);
       }
+      return res.status(500).json({ error: err || 'Failed to update team.' });
     }
-    if (!team) { return res.json({ success: false }); } // TODO: HTTP status code?
-    return res.status(201).json({ success: true });
+    return res.status(201).json(team);
   });
 };
 
@@ -94,7 +92,7 @@ exports.update = function(req, res) {
  */
 exports.destroy = function(req, res) {
   TeamsDAO.delete(req.params.id, function(err) {
-    if (err) { return res.status(500).json(err); }
+    if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json({ success: true });
   });
 };

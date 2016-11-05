@@ -13,7 +13,7 @@ var Team = require('../models/team');
 
 
 /**
- * Finds teams matching conditions and returns a collection of steminars.
+ * Finds teams matching conditions and returns a collection of teams.
  * @param  {Object} Conditions:
  *                    name: Filter for team with this name.
  *                    
@@ -27,6 +27,10 @@ exports.find = function(conditions, callback) {
 
   var _conditions = buildConditions(conditions);
   Team.find(_conditions, callback);
+};
+
+exports.findByName = function(name, callback) {
+  Team.findOne({ name: name }, callback);
 };
 
 /**
