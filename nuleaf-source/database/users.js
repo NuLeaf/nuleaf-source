@@ -23,7 +23,9 @@ var User = require('../models/user');
  *                    lastname : Filter for users with this lastname.
  *                    is_active: Filter for users that are active (if true) or inactive (if false).
  *                    team_name: Filter for users by which team they belong to.
- *                    
+ *                    skip     : Return a certain number of results after a certain number of documents.
+ *                    limit    : Used to specify the maximum number of results to be returned.
+ *
  * @return {Error}, {Array} Array of users, or empty if none found matching conditions.
  */
 exports.find = function(conditions, callback) {
@@ -32,8 +34,14 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
+  var skip = +conditions.skip;
+  var limit = +conditions.limit;
+
+  delete conditions.skip;
+  delete conditions.limit;
+
   var _conditions = buildConditions(conditions);
-  User.find(_conditions, callback);
+  User.find(_conditions).skip(skip).limit(limit).exec(callback);
 };
 
 /**

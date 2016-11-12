@@ -23,6 +23,8 @@ var UsersDAO = require('../database/users');
  *   active   : Filter for users that are active (cannot be combined with inactive).
  *   inactive : Filter for users that are inactive (cannot be commined with active).
  *   team_name: Filter for users by which team they belong to.
+ *   skip     : Return a certain number of results after a certain number of documents.
+ *   limit    : Used to specify the maximum number of results to be returned.
  */
 exports.search = function(req, res) {
   UsersDAO.find({
@@ -32,6 +34,8 @@ exports.search = function(req, res) {
     lastname : req.query.lastname,
     is_active: req.query.hasOwnProperty('active') ? true : (req.query.hasOwnProperty('inactive') ? false : undefined),
     team_name: req.query.team_name
+    skip     : req.query.skip,
+    limit    : req.query.limit
   }, function(err, users) {
     if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(users);
