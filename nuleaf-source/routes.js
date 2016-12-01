@@ -21,6 +21,7 @@ var TeamsController     = require('./controllers/teams');
 // Events
 router.get   ('/events',     EventsController.search);
 router.post  ('/events',     EventsController.store);
+router.get   ('/events/count', EventsController.count);
 router.get   ('/events/:id', EventsController.get);
 router.patch ('/events/:id', EventsController.update);
 router.delete('/events/:id', EventsController.destroy);
@@ -28,6 +29,7 @@ router.delete('/events/:id', EventsController.destroy);
 // Steminars
 router.get   ('/steminars',     SteminarsController.search);
 router.post  ('/steminars',     SteminarsController.store);
+router.get   ('/steminars/count', SteminarsController.count);
 router.get   ('/steminars/:id', SteminarsController.get);
 router.patch ('/steminars/:id', SteminarsController.update);
 router.delete('/steminars/:id', SteminarsController.destroy);

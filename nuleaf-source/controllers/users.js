@@ -33,12 +33,34 @@ exports.search = function(req, res) {
     firstname: req.query.firstname,
     lastname : req.query.lastname,
     is_active: req.query.hasOwnProperty('active') ? true : (req.query.hasOwnProperty('inactive') ? false : undefined),
-    team_name: req.query.team_name
+    team_name: req.query.team_name,
     skip     : req.query.skip,
     limit    : req.query.limit
   }, function(err, users) {
     if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(users);
+  });
+};
+
+/**
+ * Counts the number of users in the database. A successful response will 
+ * always be a number even if that number is 0.
+ *
+ * Parameters list:
+ *   title     : Filter for events with this title.
+ *   start_date: Filter for events after this date.
+ *   end_date  : Filter for events before this date.
+ *   location  : Filter for events with this location.
+ */
+exports.count = function(req, res) {
+  UsersDAO.count({
+    title     : req.query.title,
+    start_date: req.query.start_date,
+    end_date  : req.query.end_date,
+    location  : req.query.location
+  }, function(err, count) {
+    if (err) { return res.status(500).json({ error: err }); }
+    return res.status(200).json(count);
   });
 };
 

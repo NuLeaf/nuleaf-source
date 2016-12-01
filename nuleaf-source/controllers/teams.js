@@ -32,6 +32,28 @@ exports.search = function(req, res) {
 };
 
 /**
+ * Counts the number of teams in the database. A successful response will 
+ * always be a number even if that number is 0.
+ *
+ * Parameters list:
+ *   title     : Filter for events with this title.
+ *   start_date: Filter for events after this date.
+ *   end_date  : Filter for events before this date.
+ *   location  : Filter for events with this location.
+ */
+exports.count = function(req, res) {
+  TeamsDAO.count({
+    title     : req.query.title,
+    start_date: req.query.start_date,
+    end_date  : req.query.end_date,
+    location  : req.query.location
+  }, function(err, count) {
+    if (err) { return res.status(500).json({ error: err }); }
+    return res.status(200).json(count);
+  });
+};
+
+/**
  * Stores a team in the database. The response will contain the new team.
  *
  * POST data:
