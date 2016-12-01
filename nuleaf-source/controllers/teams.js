@@ -43,10 +43,7 @@ exports.search = function(req, res) {
  */
 exports.count = function(req, res) {
   TeamsDAO.count({
-    title     : req.query.title,
-    start_date: req.query.start_date,
-    end_date  : req.query.end_date,
-    location  : req.query.location
+    name : req.query.name
   }, function(err, count) {
     if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(count);

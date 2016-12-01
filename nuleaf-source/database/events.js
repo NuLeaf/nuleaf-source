@@ -41,6 +41,26 @@ exports.find = function(conditions, callback) {
 };
 
 /**
+ * Count events matching conditions and returns a collection of events.
+ * @param  {Object} Conditions:
+ *                    title     : Filter for events with this title.
+ *                    start_date: Filter for events after this date.
+ *                    end_date  : Filter for events before this date.
+ *                    location  : Filter for events with this location.
+ *
+ * @return {Error}, {Integer} Integer of events with matching conditions.
+ */
+exports.count = function(conditions, callback) {
+  if (typeof conditions === 'function') {
+    callback = conditions;
+    conditions = {};
+  }
+
+  var _conditions = buildConditions(conditions);
+  Event.count(_conditions, callback);
+};
+
+/**
  * Create a new event and returns it.
  * @param {Object} Event data.
  *

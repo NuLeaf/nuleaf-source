@@ -33,7 +33,8 @@ exports.search = function(req, res) {
     limit     : req.query.limit
   }, function(err, events) {
     if (err) { return res.status(500).json({ error: err }); }
-    return res.status(200).json(events);
+    return res.status(200
+      ).json(events);
   });
 };
 

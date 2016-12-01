@@ -42,6 +42,26 @@ exports.find = function(conditions, callback) {
 };
 
 /**
+ * Count steminars matching conditions and returns a collection of steminars.
+ * @param  {Object} Conditions:
+ *                    title     : Filter for steminars with this title.
+ *                    start_date: Filter for steminars after this date.
+ *                    end_date  : Filter for steminars before this date.
+ *                    location  : Filter for steminars with this location.
+ *
+ * @return {Error}, {Integer} Integer of steminars with matching conditions.
+ */
+exports.count = function(conditions, callback) {
+  if (typeof conditions === 'function') {
+    callback = conditions;
+    conditions = {};
+  }
+
+  var _conditions = buildConditions(conditions);
+  Steminar.count(_conditions, callback);
+};
+
+/**
  * Create a new steminar and returns it.
  * @param {Object} Steminar data.
  *

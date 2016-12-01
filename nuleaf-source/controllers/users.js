@@ -54,10 +54,12 @@ exports.search = function(req, res) {
  */
 exports.count = function(req, res) {
   UsersDAO.count({
-    title     : req.query.title,
-    start_date: req.query.start_date,
-    end_date  : req.query.end_date,
-    location  : req.query.location
+    username : req.query.username,
+    email    : req.query.email,
+    firstname: req.query.firstname,
+    lastname : req.query.lastname,
+    is_active: req.query.hasOwnProperty('active') ? true : (req.query.hasOwnProperty('inactive') ? false : undefined),
+    team_name: req.query.team_name
   }, function(err, count) {
     if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(count);

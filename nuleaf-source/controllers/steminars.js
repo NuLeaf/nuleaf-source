@@ -54,7 +54,8 @@ exports.count = function(req, res) {
     title     : req.query.title,
     start_date: req.query.start_date,
     end_date  : req.query.end_date,
-    location  : req.query.location
+    location  : req.query.location,
+    host      : req.query.host
   }, function(err, count) {
     if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(count);

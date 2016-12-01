@@ -37,6 +37,7 @@ router.delete('/steminars/:id', SteminarsController.destroy);
 // Users
 router.get   ('/users',     UsersController.search);
 router.post  ('/users',     UsersController.store);
+router.get   ('/users/count', UsersController.count);
 router.get   ('/users/:id', UsersController.get);
 router.patch ('/users/:id', UsersController.update);
 router.delete('/users/:id', UsersController.destroy);
@@ -44,6 +45,7 @@ router.delete('/users/:id', UsersController.destroy);
 // Teams
 router.get   ('/teams',     TeamsController.search);
 router.post  ('/teams',     TeamsController.store);
+router.get   ('/teams/count', TeamsController.count);
 router.get   ('/teams/:id', TeamsController.get);
 router.patch ('/teams/:id', TeamsController.update);
 router.delete('/teams/:id', TeamsController.destroy);

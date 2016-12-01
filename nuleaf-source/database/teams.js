@@ -37,6 +37,26 @@ exports.find = function(conditions, callback) {
   Team.find(_conditions).skip(skip).limit(limit).exec(callback);
 };
 
+/**
+ * Count teams matching conditions and returns a collection of teams.
+ * @param  {Object} Conditions:
+ *                    title     : Filter for teams with this title.
+ *                    start_date: Filter for teams after this date.
+ *                    end_date  : Filter for teams before this date.
+ *                    location  : Filter for teams with this location.
+ *
+ * @return {Error}, {Integer} Integer of teams with matching conditions.
+ */
+exports.count = function(conditions, callback) {
+  if (typeof conditions === 'function') {
+    callback = conditions;
+    conditions = {};
+  }
+
+  var _conditions = buildConditions(conditions);
+  Team.count(_conditions, callback);
+};
+
 exports.findByName = function(name, callback) {
   Team.findOne({ name: name }, callback);
 };
