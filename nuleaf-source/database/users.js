@@ -45,6 +45,26 @@ exports.find = function(conditions, callback) {
 };
 
 /**
+ * Count users matching conditions and returns a collection of users.
+ * @param  {Object} Conditions:
+ *                    title     : Filter for users with this title.
+ *                    start_date: Filter for users after this date.
+ *                    end_date  : Filter for users before this date.
+ *                    location  : Filter for users with this location.
+ *
+ * @return {Error}, {Integer} Integer of users with matching conditions.
+ */
+exports.count = function(conditions, callback) {
+  if (typeof conditions === 'function') {
+    callback = conditions;
+    conditions = {};
+  }
+
+  var _conditions = buildConditions(conditions);
+  User.count(_conditions, callback);
+};
+
+/**
  * Create a new user and returns it.
  * @param {Object} User data.
  *
