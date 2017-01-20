@@ -10,6 +10,7 @@ var router = express.Router();
 
 // Controllers
 var EventsController    = require('./controllers/events');
+var PostsController     = require('./controllers/posts');
 var SteminarsController = require('./controllers/steminars');
 var UsersController     = require('./controllers/users');
 var TeamsController     = require('./controllers/teams');

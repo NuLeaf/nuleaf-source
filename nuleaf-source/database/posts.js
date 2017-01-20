@@ -15,14 +15,14 @@ var Post = require('../models/post');
 /**
  * Finds posts matching conditions and returns a collection of posts.
  * @param {Object} Conditions:
- *  				 name          : Filter for posts with this name.
+ *           name          : Filter for posts with this name.
  *           content       : Filter for posts with this content.
  *           author        : Filter for posts with this author.
  *           date_created  : Filter for posts created on this date.
  *           date_published: Filter for posts published on this date.
  *           date_modified : Filter for posts modified on this date.
- *  				 skip          : Return a certain number of results after a certain number documents.
- *  				 limit         : Used to specify the maximum number of results to be returned.
+ *           skip          : Return a certain number of results after a certain number documents.
+ *           limit         : Used to specify the maximum number of results to be returned.
  *
  * @return {Error}, {Array} Array of posts, or empty if none found matching conditions.
  */
