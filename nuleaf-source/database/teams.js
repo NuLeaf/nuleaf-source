@@ -40,10 +40,7 @@ exports.find = function(conditions, callback) {
 /**
  * Count teams matching conditions and returns a collection of teams.
  * @param  {Object} Conditions:
- *                    title     : Filter for teams with this title.
- *                    start_date: Filter for teams after this date.
- *                    end_date  : Filter for teams before this date.
- *                    location  : Filter for teams with this location.
+ *                    name     : Filter for teams with this title.
  *
  * @return {Error}, {Integer} Integer of teams with matching conditions.
  */
