@@ -15,14 +15,14 @@ var Post = require('../models/post');
 /**
  * Finds posts matching conditions and returns a collection of posts.
  * @param {Object} Conditions:
- *           name          : Filter for posts with this name.
- *           content       : Filter for posts with this content.
- *           author        : Filter for posts with this author.
- *           date_created  : Filter for posts created on this date.
- *           date_published: Filter for posts published on this date.
- *           date_modified : Filter for posts modified on this date.
- *           skip          : Return a certain number of results after a certain number documents.
- *           limit         : Used to specify the maximum number of results to be returned.
+ *                   name          : Filter for posts with this name.
+ *                   content       : Filter for posts with this content.
+ *                   author        : Filter for posts with this author.
+ *                   date_created  : Filter for posts created on this date.
+ *                   date_published: Filter for posts published on this date.
+ *                   date_modified : Filter for posts modified on this date.
+ *                   skip          : Return a certain number of results after a certain number documents.
+ *                   limit         : Used to specify the maximum number of results to be returned.
  *
  * @return {Error}, {Array} Array of posts, or empty if none found matching conditions.
  */
@@ -35,20 +35,16 @@ exports.find = function(conditions, callback) {
   var skip = +conditions.skip;
   var limit = +conditions.limit;
 
-  delete conditions.skip;
-  delete conditions.limit;
+  var _condititons = buildConditions(conditions);
 
-  var _condiitons = buildConditions(conditions);
+  var query = Post.find(_conditions).skip(skip).limit(limit);
 
-  if ( Post.postSchema.paths.hasOwnProperty(conditions.sortBy)) {
+  if (Post.postSchema.paths.hasOwnProperty(conditions.sortBy)) {
     var sort = {};
     sort[conditions.sortBy] = +conditions.sort;
-    delete conditions.sortBy;
-    delete conditions.sort;
-    Post.find(_conditions).skip(skip).limit(limit).sort(sort).exec(callback);
+    query = query.sort(sort);
   }
-  else
-    Post.find(_conditions).skip(skip).limit(limit).exec(callback);
+  query.exec(callback);
 };
 
 /**
@@ -130,9 +126,27 @@ function buildConditions(conditions) {
   if (conditions.title) { _conditions.title = new RegExp(conditions.title, 'i'); }
   if (conditions.content) { _conditions.content = new RegExp(conditions.content, 'i'); }
   if (conditions.author) { _conditions.author = new RegExp(conditions.author, 'i'); }
-  if (conditions.date_created) { _conditions.date_created = new RegExp(conditions.date_created, 'i'); }
-  if (conditions.date_published) { _conditions.date_published = new RegExp(conditions.date_published, 'i'); }
-  if (conditions.date_modified) { _conditions.date_modified = new RegExp(conditions.date_modified, 'i')}
+  
+  if (conditions.date_created) { _conditions.date_created = conditions.date_created; }
+  if (conditions.date_published) { _conditions.date_published = conditions.date_published; }
+  if (conditions.date_modified) { _conditions.date_modified = conditions.date_modified; }
+  else if (conditions.start_date || conditions.end_date) {
+    _conditions.date_created = {};
+    _conditions.date_published = {};
+    _conditions.date_modified = {};
+
+    if (conditions.start_date) {
+      _conditions.date_created.$gte = conditions.start_date;
+      _conditions.date_published.$gte = conditions.start_date;
+      _conditions.date_modified.$gte = conditions.start_date;
+    }
+
+    if (conditions.end_date) {
+      _conditions.date_created.$lte = conditions.end_date;
+      _conditions.date_published.$lte = conditions.end_date;
+      _conditions.date_modified.$lte = conditions.end_date;
+    }
+  }
   
   return _conditions;
 }
