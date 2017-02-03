@@ -16,16 +16,22 @@ var PostsDAO = require('..database/posts');
  * be an array even if no steminars were found matching the filters.
  *
  * Parameters list:
- *     title         : Filter for posts with this title.
- *     content       : Filter for posts with this content.
- *     author        : Filter for posts with this author.
- *     date_created  : Filter for posts created on this date.
- *     date_published: Filter for posts published on this date.
- *     date_modified : Filter for posts modified on this date.
- *     sort          : Stores a number that determines if the results are shown in de/ascending order.
- *     sortBy        : Stores the attribute above that the results are sorted by.
- *     skip          : Return a certain number of results after a certain number of documents.
- *     limit         : Used to specify the maximum number of results to be returned.
+ *     title           : Filter for posts with this title.
+ *     content         : Filter for posts with this content.
+ *     author          : Filter for posts with this author.
+ *     date_created    : Filter for posts created on this date.
+ *     date_published  : Filter for posts published on this date.
+ *     date_modified   : Filter for posts modified on this date.
+ *     sort            : Stores a number that determines if the results are shown in de/ascending order.
+ *     sortBy          : Stores the attribute above that the results are sorted by.
+ *     skip            : Return a certain number of results after a certain number of documents.
+ *     limit           : Used to specify the maximum number of results to be returned.
+ *     created_before  : Filter for posts after this date.
+ *     created_after   : Filter for posts before this date.
+ *     published_before: Filter for posts after this date.
+ *     published_after : Filter for posts before this date.
+ *     modified_before : Filter for posts after this date.
+ *     modified_after  : Filter for posts before this date.
  */
 exports.search = function(req, res) {
   PostsDao.find({
@@ -39,8 +45,12 @@ exports.search = function(req, res) {
     sortBy        : req.query.sortBy,
     skip          : req.query.skip,
     limit         : req.query.limit,
-    start_date    : req.query.start_date,
-    end_date      : req.query.end_date
+    created_before: req.query.created_before,
+    created_after : req.query.created_after,
+    published_before: req.query.published_before,
+    published_after : req.query.published_after,
+    modified_before : req.query.modified_before,
+    modified_after  : req.query.modified_after
   }, function(err, steminars) {
    	if (err) { return res.status(500).json({ error: err }); }
    	return res.status(200).json(posts);
