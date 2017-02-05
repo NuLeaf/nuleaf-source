@@ -19,9 +19,6 @@ var PostsDAO = require('..database/posts');
  *     title           : Filter for posts with this title.
  *     content         : Filter for posts with this content.
  *     author          : Filter for posts with this author.
- *     date_created    : Filter for posts created on this date.
- *     date_published  : Filter for posts published on this date.
- *     date_modified   : Filter for posts modified on this date.
  *     sort            : Stores a number that determines if the results are shown in de/ascending order.
  *     sortBy          : Stores the attribute above that the results are sorted by.
  *     skip            : Return a certain number of results after a certain number of documents.
@@ -38,9 +35,6 @@ exports.search = function(req, res) {
     title         : req.query.title,
     content       : req.query.content,
     author        : req.query.author,
-    date_created  : req.query.date_created,
-    date_published: req.query.date_published,
-    date_modified : req.query.date_modified,
     sort          : req.query.sort,
     sortBy        : req.query.sortBy,
     skip          : req.query.skip,

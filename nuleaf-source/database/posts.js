@@ -18,9 +18,6 @@ var Post = require('../models/post');
  *                   name            : Filter for posts with this name.
  *                   content         : Filter for posts with this content.
  *                   author          : Filter for posts with this author.
- *                   date_created    : Filter for posts created on this date.
- *                   date_published  : Filter for posts published on this date.
- *                   date_modified   : Filter for posts modified on this date.
  *                   sort            : Stores a number that determines if the results are shown in de/ascending order.
  *                   sortBy          : Stores the attribute above that the results are sorted by.
  *                   skip            : Return a certain number of results after a certain number of documents.
@@ -135,28 +132,22 @@ function buildConditions(conditions) {
   if (conditions.content) { _conditions.content = new RegExp(conditions.content, 'i'); }
   if (conditions.author) { _conditions.author = new RegExp(conditions.author, 'i'); }
   
-  if (conditions.date_created) { _conditions.date_created = conditions.date_created; }
-  if (conditions.date_published) { _conditions.date_published = conditions.date_published; }
-  if (conditions.date_modified) { _conditions.date_modified = conditions.date_modified; }
-  
-  else if (conditions.created_before || conditions.created_after) {
-    _conditions.date_created = {};
-
-    if (conditions.created_before) { _conditions.date_created.$gte = conditions.created_before; }
-    if (conditions.created_after) { _conditions.date_created.$lte = conditions.created_after; }
+  if (conditions.created_before || conditions.created_after) {
+    _conditions.date_created = getDateRangeQuery(conditions.created_before, conditions.created_after);
   }
-  else if (conditions.published_before || conditions.published_after) {
-    _conditions.date_published = {};
-
-    if (conditions.published_before) { _conditions.date_published.$gte = conditions.published_before; }
-    if (conditions.published_after) { _conditions.date_published.$lte = conditions.published_after; }
+  if (conditions.modified_before || condtions.modified_after) {
+    _conditions.date_modified = getDateRangeQuery(conditions.modified_before, conditions.modified_after);
   }
-  else if (conditions.modified_before || condtions.modified_after) {
-    _conditions.date_modified = {};
-
-    if (conditions.modified_before) { _conditions.date_modified.$gte = conditions.modified_before; }
-    if (conditions.modified_after) { _conditions.date_modified.$lte = conditions.modified_after; }
+  if (conditions.published_before || conditions.published_after) {
+    _conditions.date_published = getDateRangeQuery(conditions.published_before, conditions.published_after);
   }
-  
+
+  function getDateRangeQuery(before, after) {
+    var query = {};
+    if (after) query.$gte = after;
+    if (before) query.$lte = before;
+    return query;
+  }
+
   return _conditions;
 }
