@@ -45,7 +45,7 @@ exports.search = function(req, res) {
     published_after : req.query.published_after,
     modified_before : req.query.modified_before,
     modified_after  : req.query.modified_after
-  }, function(err, steminars) {
+  }, function(err, posts) {
     if (err) { return res.status(500).json({ error: err }); }
     return res.status(200).json(posts);
   });

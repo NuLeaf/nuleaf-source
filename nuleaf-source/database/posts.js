@@ -35,13 +35,13 @@ exports.find = function(conditions, callback) {
   if (typeof conditions === 'function') {
     callback = conditions;
     conditions = {};
-
-    var skip = +conditions.skip || 0;
-    var limit = +conditions.limit || 0;
-
-    var _condititons = buildConditions(conditions);
-    var query = Post.find(_conditions).skip(skip).limit(limit);
   }
+
+  var skip = +conditions.skip || 0;
+  var limit = +conditions.limit || 100;
+
+  var _condititons = buildConditions(conditions);
+  var query = Post.find(_conditions).skip(skip).limit(limit);
 
   if (Post.postSchema.paths.hasOwnProperty(conditions.sortBy)) {
     var sort = {};
@@ -149,7 +149,7 @@ function buildConditions(conditions) {
 
 /**
  * Searches for the date range.
- * @param {Object} date before and date after
+ * @param {Object} two date objects
  *
  * @return {Object} date range.
  */
