@@ -33,16 +33,15 @@ var Post = require('../models/post');
  */
 exports.find = function(conditions, callback) {
   if (typeof conditions === 'function') {
- 	  callback = conditions;
- 	  conditions = {};
+    callback = conditions;
+    conditions = {};
+
+    var skip = +conditions.skip || 0;
+    var limit = +conditions.limit || 0;
+
+    var _condititons = buildConditions(conditions);
+    var query = Post.find(_conditions).skip(skip).limit(limit);
   }
-
-  var skip = +conditions.skip;
-  var limit = +conditions.limit;
-
-  var _condititons = buildConditions(conditions);
-
-  var query = Post.find(_conditions).skip(skip).limit(limit);
 
   if (Post.postSchema.paths.hasOwnProperty(conditions.sortBy)) {
     var sort = {};
@@ -55,19 +54,22 @@ exports.find = function(conditions, callback) {
 /**
  * Count posts matching conditions and returns a collection of posts.
  * @param {Object} Conditions:
- *                   title         : Filter for posts with this title.
- *                   content       : Filter for posts with this content.
- *                   author        : Filter for posts with this author.
- *                   date_created  : Filter for posts created on this date.
- *                   date_published: Filter for posts published on this date.
- *                   date_modified : Filter for posts modified on this date.
+ *                   title           : Filter for posts with this title.
+ *                   content         : Filter for posts with this content.
+ *                   author          : Filter for posts with this author.
+ *                   created_before  : Filter for posts after this date.
+ *                   created_after   : Filter for posts before this date.
+ *                   published_before: Filter for posts after this date.
+ *                   published_after : Filter for posts before this date.
+ *                   modified_before : Filter for posts after this date.
+ *                   modified_after  : Filter for posts before this date.
  *
  * @return {Error}, {Integer} Integer of posts with matching conditions.
  */
  exports.count = function(conditions, callback) {
   if (typeof conditions === 'function') {
     callback = conditions;
- 	conditions = {};
+  conditions = {};
   }
 
   var _conditions = buildConditions(conditions);
@@ -81,7 +83,7 @@ exports.find = function(conditions, callback) {
  * @return {Error}, {Post} Post if created or null.
  */
 exports.create = function(data, callback) {
-	Post.create(data, callback);
+  Post.create(data, callback);
 };
 
 /**
@@ -91,7 +93,7 @@ exports.create = function(data, callback) {
  * @return {Error}, {Post} Post if found or null.
  */
 exports.get = function(id, callback) {
-	Post.findById(id, callback);
+  Post.findById(id, callback);
 };
 
 /**
@@ -142,12 +144,18 @@ function buildConditions(conditions) {
     _conditions.date_published = getDateRangeQuery(conditions.published_before, conditions.published_after);
   }
 
-  function getDateRangeQuery(before, after) {
-    var query = {};
-    if (after) query.$gte = after;
-    if (before) query.$lte = before;
-    return query;
-  }
-
   return _conditions;
+}
+
+/**
+ * Searches for the date range.
+ * @param {Object} date before and date after
+ *
+ * @return {Object} date range.
+ */
+function getDateRangeQuery(before, after) {
+  var query = {};
+  if (after) query.$gte = after;
+  if (before) query.$lte = before;
+  return query;
 }
