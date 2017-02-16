@@ -27,20 +27,27 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
-  var skip = +conditions.skip;
-  var limit = +conditions.limit;
+  var skip = +conditions.skip || 0;
+  var limit = +conditions.limit || 100;
 
-  delete conditions.skip;
-  delete conditions.limit;
+  var _condititons = buildConditions(conditions);
+  var query = Team.find(_conditions).skip(skip).limit(limit);
 
-  var _conditions = buildConditions(conditions);
-  Team.find(_conditions).skip(skip).limit(limit).exec(callback);
+  if (Team.teamSchema.paths.hasOwnProperty(conditions.sortBy)) {
+    var sort = {};
+    sort[conditions.sortBy] = +conditions.sort;
+    query = query.sort(sort);
+  }
+  query.exec(callback);
 };
 
 /**
  * Count teams matching conditions and returns a collection of teams.
  * @param  {Object} Conditions:
- *                    name     : Filter for teams with this title.
+ *                    title     : Filter for teams with this title.
+ *                    start_date: Filter for teams after this date.
+ *                    end_date  : Filter for teams before this date.
+ *                    location  : Filter for teams with this location.
  *
  * @return {Error}, {Integer} Integer of teams with matching conditions.
  */

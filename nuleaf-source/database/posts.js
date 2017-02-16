@@ -40,7 +40,7 @@ exports.find = function(conditions, callback) {
   var skip = +conditions.skip || 0;
   var limit = +conditions.limit || 100;
 
-  var _condititons = buildConditions(conditions);
+  var _conditions = buildConditions(conditions);
   var query = Post.find(_conditions).skip(skip).limit(limit);
 
   if (Post.postSchema.paths.hasOwnProperty(conditions.sortBy)) {

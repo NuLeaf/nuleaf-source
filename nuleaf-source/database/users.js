@@ -34,14 +34,18 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
-  var skip = +conditions.skip;
-  var limit = +conditions.limit;
-
-  delete conditions.skip;
-  delete conditions.limit;
+  var skip = +conditions.skip || 0;
+  var limit = +conditions.limit || 100;
 
   var _conditions = buildConditions(conditions);
-  User.find(_conditions).skip(skip).limit(limit).exec(callback);
+  var query = User.find(_conditions).skip(skip).limit(limit)
+
+  if (User.userSchema.paths.hasOwnProperty(conditions.sortBy)) {
+    var sort = {};
+    sort[conditions.sortBy] = +conditions.sort;
+    query = query.sort(sort);
+  }
+  query.exec(callback);
 };
 
 /**
