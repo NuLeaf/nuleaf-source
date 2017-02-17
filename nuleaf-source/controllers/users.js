@@ -23,6 +23,8 @@ var UsersDAO = require('../database/users');
  *   active   : Filter for users that are active (cannot be combined with inactive).
  *   inactive : Filter for users that are inactive (cannot be commined with active).
  *   team_name: Filter for users by which team they belong to.
+ *   sort     : Stores a number that determines if the results are shown in de/ascending order.
+ *   sortBy   : Stores the attribute above that the results are sorted by.
  *   skip     : Return a certain number of results after a certain number of documents.
  *   limit    : Used to specify the maximum number of results to be returned.
  */
@@ -34,6 +36,8 @@ exports.search = function(req, res) {
     lastname : req.query.lastname,
     is_active: req.query.hasOwnProperty('active') ? true : (req.query.hasOwnProperty('inactive') ? false : undefined),
     team_name: req.query.team_name,
+    sort     : req.query.sort,
+    sortBy   : req.query.sortBy,
     skip     : req.query.skip,
     limit    : req.query.limit
   }, function(err, users) {

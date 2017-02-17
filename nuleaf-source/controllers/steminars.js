@@ -21,6 +21,8 @@ var SteminarsDAO = require('../database/steminars');
  *   end_date  : Filter for steminars before this date.
  *   location  : Filter for steminars with this location.
  *   host      : Filter for steminars with this host.
+ *   sort      : Stores a number that determines if the results are shown in de/ascending order.
+ *   sortBy    : Stores the attribute above that the results are sorted by.
  *   skip      : Return a certain number of results after a certain number of documents.
  *   limit     : Used to specify the maximum number of results to be returned.
  */
@@ -31,6 +33,8 @@ exports.search = function(req, res) {
     end_date  : req.query.end_date,
     location  : req.query.location,
     host      : req.query.host,
+    sort      : req.query.sort,
+    sortBy    : req.query.sortBy,
     skip      : req.query.skip,
     limit     : req.query.limit
   }, function(err, steminars) {

@@ -19,6 +19,8 @@ var Event = require('../models/event');
  *                    start_date: Filter for events after this date.
  *                    end_date  : Filter for events before this date.
  *                    location  : Filter for events with this location.
+ *                    sort      : Stores a number that determines if the results are shown in de/ascending order.
+ *                    sortBy    : Stores the attribute above that the results are sorted by.
  *                    skip      : Return a certain number of results after a certain number of documents.
  *                    limit     : Used to specify the maximum number of results to be returned.
  *
@@ -30,14 +32,18 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
-  var skip = +conditions.skip;
-  var limit = +conditions.limit;
+  var skip = +conditions.skip || 0;
+  var limit = +conditions.limit || 100;
 
-  delete conditions.skip;
-  delete conditions.limit;
+  var _condititons = buildConditions(conditions);
+  var query = Event.find(_conditions).skip(skip).limit(limit);
 
-  var _conditions = buildConditions(conditions);
-  Event.find(_conditions).skip(skip).limit(limit).exec(callback);
+  if (Event.eventSchema.paths.hasOwnProperty(conditions.sortBy)) {
+    var sort = {};
+    sort[conditions.sortBy] = +conditions.sort;
+    query = query.sort(sort);
+  }
+  query.exec(callback);
 };
 
 /**

@@ -31,14 +31,18 @@ exports.find = function(conditions, callback) {
     conditions = {};
   }
 
-  var skip = +conditions.skip;
-  var limit = +conditions.limit;
-
-  delete conditions.skip;
-  delete conditions.limit;
+  var skip = +conditions.skip || 0;
+  var limit = +conditions.limit || 100;
 
   var _conditions = buildConditions(conditions);
-  Steminar.find(_conditions).skip(skip).limit(limit).exec(callback);
+  var query = Steminar.find(_conditions).skip(skip).limit(limit);
+
+  if (Steminar.steminarSchema.paths.hasOwnProperty(conditions.sortBy)) {
+    var sort = {};
+    sort[conditions.sortBy] = +conditions.sort;
+    query = query.sort(sort);
+  }
+  query.exec(callback);
 };
 
 /**
